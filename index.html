@@ -5,12 +5,23 @@
 	<link rel="stylesheet" href="main.css" type="text/css"/>
 </head>
 <body ng-controller="mainController">
+<div class="navbar">
+    <input type="text" class="input input-box" ng-model="question" placeholder="Question"/>
+    <button type="submit" class="input btn" ng-click="postQuestion()">submit</button>
+</div>
+<div class="container">
+  <div class="queue enter">
+    <div class="question" ng-repeat="q in queue | filter: {status: 'red'}">
+        <div ng-click="escalate(q)">{{q.question}}</div>
+    </div>
+  </div>
 
-<input type="text" class="input input-box" ng-model="question" placeholder="Question"/>
-<button type="submit" class="input btn" ng-click="postData()">submit</button>
-
-<p ng-repeat="question in questions"> {{question.text}} </p>
-
+  <div class="queue helping">
+    <div class="question" ng-repeat="q in queue | filter: {status: 'yellow'}">
+        <div ng-click="delFromQ(q)">{{q.question}}</div>
+    </div>
+  </div>
+</div>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
 <script src="js/app.js"></script>
 <script src="js/mainController.js"></script>

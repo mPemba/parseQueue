@@ -2,20 +2,39 @@ var app = angular.module('parseQ');
 
 app.controller('mainController', function($scope, parseService) {
 
-	$scope.postData = function() {
-		parseService.postData($scope.question).success(function() {
-			$scope.question = '';
-		})
-	}
+    $scope.queue = [];
 
-    $scope.getParseData = function() {
-    	parseService.getData().then(function(res) {
-    		console.log(res);
-    		$scope.questions = res.data.data;
-    		console.log($scope.questions);
+	// $scope.postData = function() {
+	// 	parseService.postData($scope.question).success(function() {
+	// 		$scope.question = '';
+	// 	})
+	// }
+
+    var getParseData = function() {
+    	parseService.getQ().then(function(data) {
+    		$scope.queue = data;
+            console.log(data);
     	})
     }
 
-    $scope.getParseData();
+    getParseData();
+
+    $scope.postQuestion = function() {
+        parseService.postQ($scope.question).then(function(){
+            getParseData();
+            $scope.question = '';
+        })
+    }
+
+    $scope.escalate = function(questionObj) {
+        parseService.escalate(questionObj).then(function(){
+            getParseData();
+        })
+    }
+    $scope.delFromQ = function(questionObj) {
+        parseService.delFromQ(questionObj).then(function(){
+            getParseData();
+        })
+    }
 
 });
